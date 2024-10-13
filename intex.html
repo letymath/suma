@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operaciones con Enteros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin: 0 auto;
+        }
+        input {
+            margin: 10px;
+            padding: 8px;
+            width: 80px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .exercise {
+            font-size: 18px;
+        }
+        .feedback {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Operaciones con Enteros</h1>
+        <p>Resuelve las siguientes operaciones</p>
+
+        <div class="exercise" id="operacion1"></div>
+        <input type="number" id="respuesta1">
+        <span class="feedback" id="feedback1"></span>
+
+        <div class="exercise" id="operacion2"></div>
+        <input type="number" id="respuesta2">
+        <span class="feedback" id="feedback2"></span>
+
+        <div class="exercise" id="operacion3"></div>
+        <input type="number" id="respuesta3">
+        <span class="feedback" id="feedback3"></span>
+
+        <div class="exercise" id="operacion4"></div>
+        <input type="number" id="respuesta4">
+        <span class="feedback" id="feedback4"></span>
+
+        <div class="exercise" id="operacion5"></div>
+        <input type="number" id="respuesta5">
+        <span class="feedback" id="feedback5"></span>
+
+        <div class="exercise" id="operacion6"></div>
+        <input type="number" id="respuesta6">
+        <span class="feedback" id="feedback6"></span>
+
+        <div class="exercise" id="operacion7"></div>
+        <input type="number" id="respuesta7">
+        <span class="feedback" id="feedback7"></span>
+
+        <div class="exercise" id="operacion8"></div>
+        <input type="number" id="respuesta8">
+        <span class="feedback" id="feedback8"></span>
+
+        <div class="button-container">
+            <button onclick="verificarRespuestas()">Verificar respuestas</button>
+            <button onclick="seguirPracticando()">Seguir practicando</button>
+        </div>
+    </div>
+
+    <script>
+        let operaciones = [];
+        let respuestasCorrectas = [];
+
+        function generarNumeroAleatorio() {
+            return Math.floor(Math.random() * 21) - 10; // Genera números entre -10 y 10, excluyendo el 0
+        }
+
+        function generarOperaciones() {
+            operaciones = [];
+            respuestasCorrectas = [];
+
+            while (operaciones.length < 8) {
+                let num1 = generarNumeroAleatorio();
+                let num2 = generarNumeroAleatorio();
+                if (num1 === 0 || num2 === 0) continue; // Evitar ceros
+
+                // Añadir la operación y su resultado
+                operaciones.push({ num1, num2 });
+                respuestasCorrectas.push(num1 + num2);
+            }
+
+            // Mostrar las operaciones, evitando "+ -"
+            operaciones.forEach((op, index) => {
+                let operacionTexto = '';
+                if (op.num2 < 0) {
+                    operacionTexto = `${op.num1} - ${Math.abs(op.num2)} =`;
+                } else {
+                    operacionTexto = `${op.num1} + ${op.num2} =`;
+                }
+                document.getElementById(`operacion${index + 1}`).innerText = operacionTexto;
+            });
+        }
+
+        function verificarRespuestas() {
+            // Obtener las respuestas del alumno
+            const respuestasAlumno = [
+                parseInt(document.getElementById('respuesta1').value),
+                parseInt(document.getElementById('respuesta2').value),
+                parseInt(document.getElementById('respuesta3').value),
+                parseInt(document.getElementById('respuesta4').value),
+                parseInt(document.getElementById('respuesta5').value),
+                parseInt(document.getElementById('respuesta6').value),
+                parseInt(document.getElementById('respuesta7').value),
+                parseInt(document.getElementById('respuesta8').value)
+            ];
+
+            // Comparar respuestas y mostrar el resultado
+            respuestasAlumno.forEach((respuesta, index) => {
+                const feedbackElement = document.getElementById(`feedback${index + 1}`);
+                const correcta = respuestasCorrectas[index];
+
+                if (respuesta === correcta) {
+                    feedbackElement.innerHTML = '<span class="correct">✓</span>';
+                } else {
+                    feedbackElement.innerHTML = '<span class="incorrect">✗</span>';
+                }
+            });
+        }
+
+        function seguirPracticando() {
+            // Limpiar los campos de respuesta y feedback
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById(`respuesta${i}`).value = '';
+                document.getElementById(`feedback${i}`).innerHTML = '';
+            }
+            generarOperaciones(); // Generar nuevas operaciones
+        }
+
+        // Iniciar con la generación de operaciones
+        window.onload = generarOperaciones;
+    </script>
+</body>
+</html>
